@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f6f9;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .stats {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      width: 200px;
+      text-align: center;
+    }
+
+    .orders {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .order {
+      background: white;
+      margin: 10px;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>📊 Admin Dashboard</h1>
+
+  <div class="stats">
+    <div class="card">
+      <h2 id="sales">0</h2>
+      <p>Total Sales</p>
+    </div>
+
+    <div class="card">
+      <h2 id="count">0</h2>
+      <p>Total Orders</p>
+    </div>
+  </div>
+
+  <div class="orders">
+    <h2>Completed Orders</h2>
+    <div id="orders"></div>
+  </div>
+
+  <script>
+   const API = "https://vascular-bulk-thrift.ngrok-free.dev";
+
+    function loadData() {
+      fetch(API + "/orders")
+        .then(res => res.json())
+        .then(data => {
+
+          let totalSales = 0;
+          let totalOrders = 0;
+
+          const container = document.getElementById("orders");
+          container.innerHTML = "";
+
+          data
+            .filter(o => o.status === "served")
+            .forEach(order => {
+
+              totalSales += order.total || 0;
+              totalOrders++;
+
+              const div = document.createElement("div");
+              div.className = "order";
+
+              div.innerHTML = `
+                <h3>Table: ${order.tableNumber}</h3>
+                <p>${order.items.map(i => i.name + " x" + i.quantity).join(", ")}</p>
+                <p><b>Total:</b> Rs ${order.total}</p>
+                <p><b>Payment:</b> ${order.payment}</p>
+              `;
+
+              container.appendChild(div);
+            });
+
+          document.getElementById("sales").innerText = "Rs " + totalSales;
+          document.getElementById("count").innerText = totalOrders;
+        });
+    }
+
+    setInterval(loadData, 2000);
+  </script>
+
+</body>
+</html>

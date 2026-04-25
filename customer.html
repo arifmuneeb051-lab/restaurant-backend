@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Order</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>📱 Place Order</h1>
+
+<label>Table Number:</label><br>
+<input type="number" id="tableNumber"><br><br>
+
+<label>Select Items:</label><br>
+
+<input type="checkbox" value="Burger"> Burger<br>
+<input type="checkbox" value="Pizza"> Pizza<br>
+<input type="checkbox" value="Coke"> Coke<br>
+<input type="checkbox" value="Chicken Wings"> Chicken Wings<br><br>
+
+<button onclick="placeOrder()">Place Order</button>
+
+<p id="msg"></p>
+
+<script>
+function placeOrder() {
+    const tableNumber = document.getElementById("tableNumber").value;
+    const checkboxes = document.querySelectorAll("input[type=checkbox]:checked");
+
+    const items = [];
+
+    checkboxes.forEach(cb => {
+        items.push({ name: cb.value, quantity: 1 });
+    });
+
+    fetch("http://192.168.18.201:5000/order", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ tableNumber, items })
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("msg").innerText = "Order Placed!";
+    });
+}
+</script>
+
+</body>
+</html>
