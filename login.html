@@ -13,29 +13,28 @@
 <button onclick="login()">Login</button>
 
 <script>
-const API = "https://vascular-bulk-thrift.ngrok-free.dev";
+const API = "https://restaurant-backend-production-7832.up.railway.app";
 
 function login() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
 
   fetch(API + "/login", {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({ username, password })
   })
   .then(res => res.json())
   .then(data => {
     if (data.success) {
-      if (data.role === "admin") {
-        window.location.href = "admin.html";
-      } else if (data.role === "kitchen") {
-        window.location.href = "kitchen.html";
-      } else if (data.role === "waiter") {
-        window.location.href = "waiter.html";
-      }
+      if (data.role === "admin") window.location.href = "admin.html";
+      else if (data.role === "kitchen") window.location.href = "kitchen.html";
+      else if (data.role === "waiter") window.location.href = "waiter.html";
+      else if (data.role === "customer") window.location.href = "customer.html";
     } else {
-      alert("Invalid login");
+      alert("❌ Invalid Login");
     }
   });
 }

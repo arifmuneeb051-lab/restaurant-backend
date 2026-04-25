@@ -9,10 +9,6 @@
       padding: 20px;
     }
 
-    h1 {
-      color: #2f3640;
-    }
-
     .card {
       background: white;
       border-radius: 10px;
@@ -22,8 +18,8 @@
     }
 
     .pending { border-left: 6px solid orange; }
+    .preparing { border-left: 6px solid blue; }
     .ready { border-left: 6px solid green; }
-    .served { border-left: 6px solid gray; }
 
     button {
       padding: 8px 12px;
@@ -52,9 +48,11 @@
           const container = document.getElementById("orders");
           container.innerHTML = "";
 
-          data.forEach(order => {
-            const div = document.createElement("div");
+          // ✅ REMOVE SERVED ORDERS
+          const activeOrders = data.filter(o => o.status !== "served");
 
+          activeOrders.forEach(order => {
+            const div = document.createElement("div");
             div.className = "card " + order.status;
 
             div.innerHTML = `
