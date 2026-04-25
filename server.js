@@ -90,7 +90,7 @@ const users = [
   { username: "admin", password: "1234", role: "admin" },
   { username: "kitchen", password: "1234", role: "kitchen" },
   { username: "waiter", password: "1234", role: "waiter" },
-  { username: "customer", password: "1234", role: "customer" } 
+  { username: "customer", password: "1234", role: "customer" } // ✅ ADD THIS
 ];
 
 app.post("/login", (req, res) => {
