@@ -5,6 +5,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// 🧠 MEMORY STORE
 let orders = [];
 
 // =====================
@@ -22,6 +23,9 @@ app.post("/order", (req, res) => {
   };
 
   orders.push(order);
+
+  console.log("🆕 New Order:", order);
+
   res.json(order);
 });
 
@@ -42,13 +46,14 @@ app.post("/update", (req, res) => {
 
   if (order) {
     order.status = status;
+    console.log("🔄 Updated:", id, status);
   }
 
   res.json({ success: true });
 });
 
 // =====================
-// DELETE SERVED ORDERS
+// AUTO REMOVE SERVED (IMPORTANT FIX)
 // =====================
 app.post("/clear-served", (req, res) => {
   orders = orders.filter(o => o.status !== "served");
@@ -56,11 +61,12 @@ app.post("/clear-served", (req, res) => {
 });
 
 // =====================
-// RESET ALL ORDERS (VERY USEFUL)
+// RESET ALL ORDERS
 // =====================
-app.post("/reset", (req, res) => {
+app.get("/reset", (req, res) => {
   orders = [];
-  res.json({ message: "All orders cleared" });
+  console.log("🧹 All orders cleared");
+  res.send("All orders cleared ✅");
 });
 
 // =====================
@@ -70,7 +76,7 @@ const users = [
   { username: "admin", password: "1234", role: "admin" },
   { username: "kitchen", password: "1234", role: "kitchen" },
   { username: "waiter", password: "1234", role: "waiter" },
-  { username: "customer", password: "1234", role: "customer" }, // ✅ FIXED
+  { username: "customer", password: "1234", role: "customer" },
 ];
 
 app.post("/login", (req, res) => {
@@ -89,12 +95,7 @@ app.post("/login", (req, res) => {
 
 // =====================
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
-});
-
-
-app.get("/reset", (req, res) => {
-  orders = [];
-  res.send("All orders cleared ✅");
+  console.log("🚀 Server running on port " + PORT);
 });
