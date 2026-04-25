@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
 // 🚀 CREATE ORDER
 // ==========================
 app.post("/order", (req, res) => {
-  console.log("🔥 ORDER RECEIVED:", req.body); // IMPORTANT DEBUG
+  console.log("🔥 ORDER RECEIVED:", req.body);
 
   if (!req.body || !req.body.tableNumber) {
     return res.status(400).json({ error: "Invalid data" });
@@ -90,6 +90,7 @@ const users = [
   { username: "admin", password: "1234", role: "admin" },
   { username: "kitchen", password: "1234", role: "kitchen" },
   { username: "waiter", password: "1234", role: "waiter" },
+  { username: "customer", password: "1234", role: "customer" } 
 ];
 
 app.post("/login", (req, res) => {
@@ -113,8 +114,6 @@ app.post("/login", (req, res) => {
 // ==========================
 const PORT = process.env.PORT || 5000;
 
-const PORT = process.env.PORT || 5000;
-
 server.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
+  console.log("🚀 Server running on port " + PORT);
 });
