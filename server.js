@@ -1,4 +1,3 @@
-console.log("RESET ROUTE FIXED");
 const express = require("express");
 const cors = require("cors");
 
@@ -6,7 +5,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🧠 MEMORY STORE
 let orders = [];
 
 // =====================
@@ -24,9 +22,6 @@ app.post("/order", (req, res) => {
   };
 
   orders.push(order);
-
-  console.log("🆕 New Order:", order);
-
   res.json(order);
 });
 
@@ -47,14 +42,13 @@ app.post("/update", (req, res) => {
 
   if (order) {
     order.status = status;
-    console.log("🔄 Updated:", id, status);
   }
 
   res.json({ success: true });
 });
 
 // =====================
-// AUTO REMOVE SERVED (IMPORTANT FIX)
+// CLEAR SERVED
 // =====================
 app.post("/clear-served", (req, res) => {
   orders = orders.filter(o => o.status !== "served");
@@ -62,16 +56,20 @@ app.post("/clear-served", (req, res) => {
 });
 
 // =====================
-// RESET ALL ORDERS
+// RESET (GET + POST BOTH)
 // =====================
 app.get("/reset", (req, res) => {
   orders = [];
-  console.log("🧹 All orders cleared");
   res.send("All orders cleared ✅");
 });
 
+app.post("/reset", (req, res) => {
+  orders = [];
+  res.json({ message: "All orders cleared" });
+});
+
 // =====================
-// LOGIN SYSTEM
+// LOGIN
 // =====================
 const users = [
   { username: "admin", password: "1234", role: "admin" },
@@ -84,7 +82,7 @@ app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
   const user = users.find(
-    (u) => u.username === username && u.password === password
+    u => u.username === username && u.password === password
   );
 
   if (user) {
@@ -98,7 +96,6 @@ app.post("/login", (req, res) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log("🚀 Server running on port " + PORT);
+  console.log("Server running on port " + PORT);
+  console.log("🔥 NEW VERSION DEPLOYED");
 });
-
-console.log("NEW DEPLOY VERSION");
