@@ -1,3 +1,4 @@
+console.log("RESET ROUTE FIXED");
 const express = require("express");
 const cors = require("cors");
 
